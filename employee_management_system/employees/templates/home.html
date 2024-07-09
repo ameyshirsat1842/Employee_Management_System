@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+            <h1>Dashboard</h1>
+
+            <!-- Key Metrics -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Employees</h5>
+                            <p class="card-text">{{ total_employees }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Employee Salary</h5>
+                            <p class="card-text">{{ employee_salary }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Employees Added</h5>
+                            <ul class="list-group list-group-flush">
+                                {% for employee in recent_employees %}
+                                    <li class="list-group-item">{{ employee.first_name }} {{ employee.last_name }} - {{ employee.hire_date }}</li>
+                                {% empty %}
+                                    <li class="list-group-item">No recent employees.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-md-6 offset-md-3">
+            <br>
+            <h2>Login</h2>
+            <br>
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

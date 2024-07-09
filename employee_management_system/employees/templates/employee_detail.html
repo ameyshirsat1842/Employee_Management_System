@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Employee Detail{% endblock %}
+
+{% block content %}
+<br>
+<h2>Employee Detail</h2>
+<table class="table table-bordered">
+    <tr>
+        <th>First Name</th>
+        <td>{{ employee.first_name }}</td>
+    </tr>
+    <tr>
+        <th>Last Name</th>
+        <td>{{ employee.last_name }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ employee.email }}</td>
+    </tr>
+    <tr>
+        <th>Position</th>
+        <td>{{ employee.position }}</td>
+    </tr>
+    <tr>
+        <th>Salary</th>
+        <td>{{ employee.salary }}</td>
+    </tr>
+    <tr>
+        <th>Hire Date</th>
+        <td>{{ employee.hire_date }}</td>
+    </tr>
+</table>
+<a href="{% url 'employee_list' %}" class="btn btn-primary">Back to List</a>
+<br>
+<br/>
+<h3>Leave Records</h3>
+<a href="{% url 'leave_record_create' employee.id %}" class="btn btn-primary mb-2">Add Leave Record</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th> <!-- Updated -->
+            <th>Leave Type</th>
+            <th>Days</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in leave_records %}
+        <tr>
+            <td>{{ record.date }}</td> <!-- Updated -->
+            <td>{{ record.get_leave_type_display }}</td>
+            <td>{{ record.days }}</td>
+            <td>
+                <a href="{% url 'leave_record_update' employee.id record.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <form method="post" action="{% url 'leave_record_delete' employee.id record.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

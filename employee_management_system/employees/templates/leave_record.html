@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Leave Record{% else %}Add Leave Record{% endif %}{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Edit Leave Record{% else %}Add Leave Record{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
+    <a href="{% url 'employee_detail' employee.id %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
